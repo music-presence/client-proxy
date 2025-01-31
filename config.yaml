@@ -1,5 +1,5 @@
 protocol:
-  base_url: https://proxy.musicpresence.io/v0
+  chunk_buffer_size: 8
   constraints:
     chunk_size: 32768 # 32 KiB
     max_content_size: 4194304 # 131072 # 128 KiB
