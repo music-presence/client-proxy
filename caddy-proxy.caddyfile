@@ -2,18 +2,15 @@
 	order cache after rewrite
 	order cache after header
 
+	metrics
+	cache
+
 	servers :8080 {
 		name metrics
 	}
 
 	servers :80 {
 		name proxy
-		metrics
-	}
-
-	cache {
-		allowed_http_verbs GET
-		ttl 30s
 	}
 }
 
@@ -29,6 +26,16 @@
 	}
 	handle {
 		cache {
+			allowed_http_verbs GET
+			redis {
+				configuration {
+					# https://github.com/gofiber/storage/blob/main/rueidis/README.md#config
+					ClientName souin-redis
+					InitAddress musicpresence-proxy-beta_pika:9221
+					DisableCache true
+					CacheTTL 60s
+				}
+			}
 			key {
 				disable_body
 				disable_host

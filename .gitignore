@@ -1,5 +1,2 @@
-/grafana_config
-/caddy_data
-/caddy_config
-/dashboard-backups
+/data
 /*.env
