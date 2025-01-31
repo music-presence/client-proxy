@@ -1,0 +1,21 @@
+protocol:
+  base_url: https://proxy.musicpresence.io/v0
+  constraints:
+    chunk_size: 32768 # 32 KiB
+    max_content_size: 4194304 # 131072 # 128 KiB
+    accepted_content_types:
+      - image/png
+      - text/plain
+    cache_duration: 24s
+  intervals:
+    write_wait: 10s
+    pong_wait: 60s
+    ping_interval: 48s
+    timeout_duration: 30s
+    timeout_interval: 8s
+http:
+  write_timeout: 4s
+  read_timeout: 10s
+  idle_timeout: 30s
+log:
+  level: INFO # WARN

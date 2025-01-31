@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+  - job_name: "clients"
+    static_configs:
+      - targets: ["musicpresence-proxy-beta_loon-clients:8080"]
+  - job_name: "proxy"
+    static_configs:
+      - targets: ["musicpresence-proxy-beta_loon-proxy:8080"]

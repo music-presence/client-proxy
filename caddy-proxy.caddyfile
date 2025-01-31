@@ -1,0 +1,49 @@
+{
+	order cache after rewrite
+	order cache after header
+
+	servers :8080 {
+		name metrics
+	}
+
+	servers :80 {
+		name proxy
+		metrics
+	}
+
+	cache {
+		allowed_http_verbs GET
+		ttl 30s
+	}
+}
+
+:8080 {
+	metrics /metrics
+}
+
+:80 {
+	# Do not allow HTTP clients to bypass the cache.
+	request_header -Cache-Control
+	handle /ws {
+		respond 403
+	}
+	handle {
+		cache {
+			key {
+				disable_body
+				disable_host
+				disable_method
+				# the query is never forwarded to the client.
+				# it should not be possible to circumvent the cache
+				# by using meaningless query parameters.
+				disable_query
+				disable_scheme
+				headers Content-Type
+				hide
+			}
+			default_cache_control no-store
+		}
+		reverse_proxy loon:80
+		# respond {http.request.header.cache-control}
+	}
+}

@@ -1,0 +1,26 @@
+{
+	servers :8080 {
+		name metrics
+	}
+
+	servers :80 {
+		name clients
+		metrics
+	}
+}
+
+:8080 {
+	metrics /metrics
+}
+
+:80 {
+	handle /ws {
+		basic_auth bcrypt {
+			{$HTTP_WS_USER} {$HTTP_WS_PASS_BCRYPT}
+		}
+		reverse_proxy loon:80
+	}
+	handle {
+		respond 403
+	}
+}

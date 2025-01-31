@@ -1,0 +1,3 @@
+[submodule "loon_git"]
+	path = loon_git
+	url = https://github.com/ungive/loon.git

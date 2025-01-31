@@ -1,0 +1,86 @@
+name: musicpresence-proxy-beta
+
+networks:
+  musicpresence_network:
+    external: true
+
+services:
+  loon:
+    # image: ghcr.io/ungive/loon:latest
+    build:
+      context: ./loon_git
+      dockerfile: build/package/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    networks:
+      - musicpresence_network
+  loon-clients:
+    image: caddy:latest
+    restart: unless-stopped
+    env_file:
+      - caddy-clients.env
+    volumes:
+      - ./caddy-clients.caddyfile:/etc/caddy/Caddyfile
+      - caddy_data_clients:/data
+      - caddy_config_clients:/config
+    depends_on:
+      - loon
+    networks:
+      - musicpresence_network
+    hostname: ${COMPOSE_PROJECT_NAME}_loon-clients
+  loon-proxy:
+    build:
+      context: .
+      dockerfile: caddy-with-cache.dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./caddy-proxy.caddyfile:/etc/caddy/Caddyfile
+      - caddy_data_proxy:/data
+      - caddy_config_proxy:/config
+    depends_on:
+      - loon
+    networks:
+      - musicpresence_network
+    hostname: ${COMPOSE_PROJECT_NAME}_loon-proxy
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=365d'
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    depends_on:
+      - loon-clients
+      - loon-proxy
+    networks:
+      - musicpresence_network
+    hostname: ${COMPOSE_PROJECT_NAME}_loon-prometheus
+  grafana:
+    image: grafana/grafana
+    restart: unless-stopped
+    environment:
+      - GF_SERVER_ROOT_URL=https://metrics.proxy.musicpresence.io/v0
+      - GF_SECURITY_ADMIN_USER=musicpresence-proxy-admin
+      - GF_SECURITY_ADMIN_PASSWORD=uFwVBGMZKpbLNbcYWyxy
+    volumes:
+      - ./grafana_config/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana_config/dashboards:/var/lib/grafana/dashboards
+      - ./grafana_config/datasources:/etc/grafana/datasources
+      - ./grafana_config/plugins:/var/lib/grafana/plugins
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - musicpresence_network
+    hostname: ${COMPOSE_PROJECT_NAME}_grafana
+
+volumes:
+  caddy_data_clients:
+  caddy_config_clients:
+  caddy_data_proxy:
+  caddy_config_proxy:
+  prometheus_data:
+  grafana_data:
