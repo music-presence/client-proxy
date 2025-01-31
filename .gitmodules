@@ -1,3 +1,3 @@
-[submodule "loon_git"]
-	path = loon_git
+[submodule "vendor/loon"]
+	path = vendor/loon
 	url = https://github.com/ungive/loon.git

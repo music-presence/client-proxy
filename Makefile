@@ -3,5 +3,5 @@
 all:
 
 update:
-	git submodule update --remote loon_git
+	git submodule update --remote vendor/loon
 	docker compose build --no-cache loon

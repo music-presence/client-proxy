@@ -8,7 +8,7 @@ services:
   loon:
     # image: ghcr.io/ungive/loon:latest
     build:
-      context: ./loon_git
+      context: ./vendor/loon
       dockerfile: build/package/Dockerfile
     restart: unless-stopped
     volumes:
