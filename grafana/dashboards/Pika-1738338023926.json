@@ -9041,8 +9041,8 @@
       {
         "current": {
           "selected": false,
-          "text": "musicpresence-proxy-beta_pika:9221",
-          "value": "musicpresence-proxy-beta_pika:9221"
+          "text": "musicpresence-client-proxy_pika:9221",
+          "value": "musicpresence-client-proxy_pika:9221"
         },
         "datasource": {
           "type": "prometheus",

@@ -7,10 +7,10 @@ scrape_configs:
       - targets: ["localhost:9090"]
   - job_name: "clients"
     static_configs:
-      - targets: ["musicpresence-proxy-beta_loon-clients:8080"]
+      - targets: ["musicpresence-client-proxy_loon-clients:8080"]
   - job_name: "proxy"
     static_configs:
-      - targets: ["musicpresence-proxy-beta_loon-proxy:8080"]
+      - targets: ["musicpresence-client-proxy_loon-proxy:8080"]
   - job_name: "pika"
     static_configs:
-      - targets: ["musicpresence-proxy-beta_pika-metrics:9121"]
+      - targets: ["musicpresence-client-proxy_pika-metrics:9121"]

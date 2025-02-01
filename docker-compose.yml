@@ -1,4 +1,4 @@
-name: musicpresence-proxy-beta
+name: musicpresence-client-proxy
 
 networks:
   musicpresence_network:
@@ -47,7 +47,7 @@ services:
     depends_on:
       - pika
     healthcheck:
-      test: ["CMD", "redis-cli", "-h", "musicpresence-proxy-beta_pika", "-p", "9221", "ping"]
+      test: ["CMD", "redis-cli", "-h", "musicpresence-client-proxy_pika", "-p", "9221", "ping"]
       interval: 2s
       timeout: 2s
       retries: 15
@@ -59,7 +59,7 @@ services:
       context: ./pika/metrics
       dockerfile: Dockerfile
       args:
-        - PIKA_ADDR=musicpresence-proxy-beta_pika:9221
+        - PIKA_ADDR=musicpresence-client-proxy_pika:9221
     depends_on:
       pika-healthcheck:
         condition: service_healthy
