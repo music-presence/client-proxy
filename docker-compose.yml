@@ -51,7 +51,7 @@ services:
       interval: 2s
       timeout: 2s
       retries: 15
-    command: "while :; do sleep 2073600; done"
+    command: "sh -c 'while :; do sleep 2073600; done'"
     networks:
       - musicpresence_network
   pika-metrics:
