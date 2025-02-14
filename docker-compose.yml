@@ -93,10 +93,8 @@ services:
     image: grafana/grafana
     restart: unless-stopped
     user: ${USER:-0}
-    environment:
-      - GF_SERVER_ROOT_URL=https://metrics.proxy.musicpresence.io/v0
-      - GF_SECURITY_ADMIN_USER=musicpresence-proxy-admin
-      - GF_SECURITY_ADMIN_PASSWORD=uFwVBGMZKpbLNbcYWyxy
+    env_file:
+      - grafana.env
     volumes:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./data/grafana:/var/lib/grafana
