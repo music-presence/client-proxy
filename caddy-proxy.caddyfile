@@ -31,7 +31,7 @@
 				configuration {
 					# https://github.com/gofiber/storage/blob/main/rueidis/README.md#config
 					ClientName souin-redis
-					InitAddress musicpresence-client-proxy_pika:9221
+					InitAddress musicpresence-client-proxy_redis:6379
 					DisableCache true
 					CacheTTL 60s
 				}

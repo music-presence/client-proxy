@@ -11,6 +11,6 @@ scrape_configs:
   - job_name: "proxy"
     static_configs:
       - targets: ["musicpresence-client-proxy_loon-proxy:8080"]
-  - job_name: "pika"
+  - job_name: "redis"
     static_configs:
-      - targets: ["musicpresence-client-proxy_pika-metrics:9121"]
+      - targets: ["musicpresence-client-proxy_redis-metrics:9121"]
