@@ -31,7 +31,9 @@ services:
   redis:
     image: redis:latest
     restart: unless-stopped
-    command: ["redis-server", "--appendonly", "no", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    command: ["redis-server", "/usr/local/etc/redis.conf"]
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis.conf
     networks:
       - musicpresence_network
     hostname: ${COMPOSE_PROJECT_NAME}_redis
