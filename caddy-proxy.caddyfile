@@ -27,13 +27,12 @@
 	handle {
 		cache {
 			allowed_http_verbs GET
+			ttl 30s
+			stale 0s
 			redis {
 				configuration {
-					# https://github.com/gofiber/storage/blob/main/rueidis/README.md#config
-					ClientName souin-redis
-					InitAddress musicpresence-client-proxy_redis:6379
-					DisableCache true
-					CacheTTL 60s
+					# https://pkg.go.dev/github.com/redis/go-redis#RingOptions
+					Addrs musicpresence-client-proxy_redis:6379
 				}
 			}
 			key {
