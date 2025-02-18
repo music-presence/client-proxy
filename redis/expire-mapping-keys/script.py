@@ -5,7 +5,7 @@ import os
 import datetime
 
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_PORT = int(os.getenv("REDIS_PORT", "9221"))
+REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 REDIS_DB = int(os.getenv("REDIS_DB", "0"))
 DESIRED_EXPIRE = int(os.getenv("DESIRED_EXPIRE", "60"))
 DESIRED_INTERVAL = int(os.getenv("DESIRED_INTERVAL", "30"))
