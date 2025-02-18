@@ -37,6 +37,18 @@ services:
     networks:
       - musicpresence_network
     hostname: ${COMPOSE_PROJECT_NAME}_redis
+  redis-healthcheck:
+    image: goodsmileduck/redis-cli:latest
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "musicpresence-client-proxy_redis", "-p", "6379", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+    command: "sh -c 'while :; do sleep 2073600; done'"
+    networks:
+      - musicpresence_network
   redis-metrics:
     image: oliver006/redis_exporter:latest
     command:
@@ -45,13 +57,15 @@ services:
       - musicpresence_network
     hostname: ${COMPOSE_PROJECT_NAME}_redis-metrics
     depends_on:
-      - redis
+      redis-healthcheck:
+        condition: service_healthy
   redis-expire-mapping-keys:
     build:
       context: ./redis/expire-mapping-keys
       dockerfile: Dockerfile
     depends_on:
-      - redis
+      redis-healthcheck:
+        condition: service_healthy
     networks:
       - musicpresence_network
     environment:
@@ -69,8 +83,10 @@ services:
       - caddy_data_proxy:/data
       - caddy_config_proxy:/config
     depends_on:
-      - loon
-      - redis
+      loon:
+        condition: service_started
+      redis-healthcheck:
+        condition: service_healthy
     networks:
       - musicpresence_network
     hostname: ${COMPOSE_PROJECT_NAME}_loon-proxy
